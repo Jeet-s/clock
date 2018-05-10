@@ -1,0 +1,271 @@
+<html>
+
+<head>
+    <script src="angular.js"></script>
+
+    <script>
+        angular.module("main", []).controller("mainCtrl", function ($scope, $interval) {
+            $scope.ah = 0;
+            $scope.am = 0;
+            $scope.audio = new Audio("alarm.mp3");
+            $scope.Set = function () {
+                document.getElementById("time").style.background = "rgb(0,0,70)";
+                $scope.audio.pause();
+                $scope.ah = document.getElementById("hour").value;
+                $scope.am = document.getElementById("minute").value;
+                if ($scope.ah < 10) {
+                    $scope.ah = "0" + $scope.ah;
+                }
+                if ($scope.am < 10) {
+                    $scope.am = "0" + $scope.am;
+                }
+                $scope.temp = 0;
+                $interval(function () {
+                    if ($scope.h == $scope.ah && $scope.m == $scope.am) {
+                        // document.getElementById("outer").style.background=red;
+                        if ($scope.temp == 0) {
+                            document.getElementById("time").style.background = "red";
+                            $scope.audio.play();
+                            $scope.temp = 1;
+                            $scope.m = $scope.am + 1;
+                        }
+                    }
+                }, 100);
+            }
+            $interval(function () {
+                $scope.CurrentDate = new Date();
+                $scope.h = $scope.CurrentDate.getHours();
+                $scope.m = $scope.CurrentDate.getMinutes();
+                $scope.s = $scope.CurrentDate.getSeconds();
+                if ($scope.h < 10) {
+                    $scope.h = "0" + $scope.h;
+                }
+                if ($scope.m < 10) {
+                    $scope.m = "0" + $scope.m;
+                }
+                if ($scope.s < 10) {
+                    $scope.s = "0" + $scope.s;
+                }
+
+            }, 10);
+
+        });
+
+    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: rgb(0, 0, 70);
+        }
+
+        div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 20px;
+            border: 5px solid white;
+            width: 90%;
+            height: 90%;
+            overflow: hidden;
+        }
+
+        ul {
+            list-style-type: none;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 50px;
+            border-bottom: 2px solid white;
+            margin: auto;
+
+        }
+
+        ul li {
+            display: inline-block;
+            width: 33.0693%;
+            height: 100%;
+            text-align: center;
+            float: left;
+            line-height: 50px;
+            ;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul a.active {
+            background: white;
+            color: rgb(0, 0, 70);
+            font-weight: bold;
+            border-right: 20px solid white;
+        }
+
+        ul li a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            float: left;
+            text-decoration: none;
+            color: white;
+            font-size: 20px;
+            text-transform: uppercase;
+            background: rgb(0, 0, 70);
+        }
+
+        ul li a:hover {
+            font-weight: bold;
+        }
+
+        div span {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            margin: 0;
+            padding: 0;
+            display: block;
+            width: 400px;
+            height: 400px;
+            color: white;
+            text-align: center;
+            background: radial-gradient(rgb(0, 0, 100), rgb(0, 0, 40));
+            font-size: 80px;
+            line-height: 400px;
+            letter-spacing: 10px;
+            border-radius: 50%;
+            border: 5px dashed white;
+        }
+
+        div button {
+            border: 2px solid white;
+            outline: none;
+            position: absolute;
+            top: 560px;
+            width: 200px;
+            left: 38%;
+            height: 50px;
+            background: rgb(0, 0, 70);
+            color: white;
+            font-size: 25px;
+            line-height: 50px;
+            text-transform: uppercase;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: 0.4s;
+            border-radius: 20px;
+        }
+
+        div button:hover {
+            background: white;
+            color: rgb(0, 0, 70);
+            font-weight: bold;
+        }
+
+        div button#Set {
+            left: 58%;
+        }
+
+        div button#stop {
+            left: 70%;
+        }
+
+        div button#reset {
+            left: 40%;
+        }
+
+        input {
+            border: 2px solid white;
+            outline: none;
+            position: absolute;
+            top: 560px;
+            width: 100px;
+            letter-spacing: 3px;
+            left: 38%;
+            height: 50px;
+            background: rgb(0, 0, 70);
+            color: white;
+            font-size: 25px;
+            line-height: 50px;
+            text-transform: uppercase;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin: 0;
+            padding: 3 20px;
+            transition: 0.4s;
+            border-radius: 20px;
+        }
+
+        input#minute {
+            border: 2px solid white;
+            outline: none;
+            position: absolute;
+            top: 560px;
+            width: 100px;
+            letter-spacing: 3px;
+            left: 47%;
+            height: 50px;
+            background: rgb(0, 0, 70);
+            color: white;
+            font-size: 25px;
+            line-height: 50px;
+            text-transform: uppercase;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin: 0;
+            padding: 3 20px;
+            transition: 0.4s;
+            border-radius: 20px;
+        }
+
+        label {
+            position: absolute;
+            top: 570px;
+            left: 28%;
+            color: white;
+            font-size: 20px;
+            text-transform: uppercase;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+        }
+
+        label.colon {
+            left: 45.8%;
+            font-size: 25px;
+        }
+    </style>
+</head>
+
+<body ng-app="main" ng-controller="mainCtrl">
+    <div id="outer">
+        <ul>
+            <li>
+                <a href="stopwatch.html">Stop Watch</a>
+            </li>
+            <li>
+                <a class="active" href="clock.html">Clock</a>
+            </li>
+            <li>
+                <a href="timer.html">Timer</a>
+            </li>
+        </ul>
+
+        <span id="time">{{h}}:{{m}}:{{s}}</span>
+        <label class="alarmLabel">Set Alarm :</label>
+        <input type="number" id="hour" min="0" max="24" placeholder="00">
+        <label class="colon">:</label>
+        <input type="number" id="minute" min="0" max="60" placeholder="00">
+
+        <button ng-click="Set()" id="Set">
+            Set
+        </button>
+        <!--   <button ng-click="reset()" id="reset">
+                reset
+            </button>
+            <button ng-click="stop()" id="stop">
+                stop
+            </button>-->
+    </div>
+</body>
+</html

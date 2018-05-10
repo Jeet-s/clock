@@ -1,0 +1,318 @@
+<html>
+
+<head>
+    <script src="angular.js"></script>
+
+    <script>
+        angular.module("main", []).controller("mainCtrl", function ($scope, $interval) {
+            $scope.ms = "0" + 0;
+            $scope.s = "0" + 0;
+            $scope.m = "0" + 0;
+
+            $scope.audio = new Audio("alarm.mp3");
+            $scope.Set = function () {
+                document.getElementById("time").style.background = "rgb(0,0,70)";
+                $scope.audio.pause();
+                $scope.m = document.getElementById("minute").value - 1;
+                $scope.s = 59;
+                $scope.ms = 99;
+                if ($scope.m < 10) {
+                    $scope.m = "0" + $scope.m;
+                }
+            }
+            var sInterval;
+            var msInterval;
+            var mInterval;
+            $scope.start = function () {
+               
+                //    if($scope.m==0 && $scope.s==0 && $scope.ms==0){return;}
+                msInterval = $interval(function () {
+                    $scope.ms--;
+                    if ($scope.ms == 0 && $scope.s != 0) {
+                        $scope.ms = 99;
+                    }
+
+                    if ($scope.ms < 10) {
+                        $scope.ms = "0" + $scope.ms
+                    }
+                }, 10);
+
+                sInterval = $interval(function () {
+                    $scope.s--;
+                    if ($scope.s == 0 && $scope.m != 0) {
+                        $scope.s = 59;
+                    }
+                    if ($scope.s < 10) {
+                        $scope.s = "0" + $scope.s;
+                    }
+
+                }, 1000);
+
+                mInterval = $interval(function () {
+                    $scope.m--;
+
+
+                }, 60000);
+                $interval(function () {
+                if ($scope.m == "00" && $scope.s == "00" && $scope.ms == "00") {
+                    $interval.cancel(msInterval);
+                    $interval.cancel(sInterval);
+                    $interval.cancel(mInterval);
+                    $scope.ms = "0" + 0;
+                    $scope.s = "0" + 0;
+                    $scope.m = "0" + 0;
+                    // document.getElementById("outer").style.background=red;
+                    document.getElementById("time").style.background = "red";
+                    $scope.audio.play();
+                }
+            }, 100);
+            }
+            
+            
+            $scope.reset = function () {
+                $interval.cancel(msInterval);
+                $interval.cancel(sInterval);
+                $interval.cancel(mInterval);
+                $scope.ms = "oo";
+                $scope.s = "oo";
+                $scope.m = "oo";
+                
+            }
+            $scope.stop = function () {
+                $interval.cancel(msInterval);
+                $interval.cancel(sInterval);
+                $interval.cancel(mInterval);
+            }
+        });
+
+    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: rgb(0, 0, 70);
+        }
+
+        div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 20px;
+            border: 5px solid white;
+            width: 90%;
+            height: 90%;
+            overflow: hidden;
+        }
+
+        ul {
+            list-style-type: none;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 50px;
+            border-bottom: 2px solid white;
+            margin: auto;
+            background: white;
+        }
+
+        ul li {
+            display: inline-block;
+            width: 33.0693%;
+            height: 100%;
+            text-align: center;
+            float: left;
+            line-height: 50px;
+            ;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul a.active {
+            background: white;
+            color: rgb(0, 0, 70);
+            font-weight: bold;
+        }
+
+        ul li a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            float: left;
+            text-decoration: none;
+            color: white;
+            font-size: 20px;
+            text-transform: uppercase;
+            background: rgb(0, 0, 70);
+        }
+
+        ul li a:hover {
+            font-weight: bold;
+        }
+
+        div span {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            margin: 0;
+            padding: 0;
+            display: block;
+            width: 380px;
+            height: 380px;
+            color: white;
+            text-align: center;
+            background: radial-gradient(rgb(0, 0, 100), rgb(0, 0, 40));
+            font-size: 80px;
+            line-height: 400px;
+            letter-spacing: 10px;
+            border-radius: 50%;
+            border: 5px dashed white;
+        }
+
+        div button {
+            border: 2px solid white;
+            outline: none;
+            position: absolute;
+            top: 570px;
+            width: 20%;
+            left: 38%;
+            height: 50px;
+            background: rgb(0, 0, 70);
+            color: white;
+            font-size: 25px;
+            line-height: 50px;
+            text-transform: uppercase;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: 0.4s;
+            border-radius: 20px;
+        }
+
+        div button:hover {
+            background: white;
+            color: rgb(0, 0, 70);
+            font-weight: bold;
+        }
+
+        div button#start {
+            left: 10%;
+        }
+
+        div button#stop {
+            left: 70%;
+        }
+
+        div button#reset {
+            left: 40%;
+        }
+
+        div button#Set {
+            top: 490px;
+            left: 58%;
+            width: 200px;
+        }
+
+        select {
+            border: 2px solid white;
+            outline: none;
+            position: absolute;
+            top: 490px;
+            width: 100px;
+            letter-spacing: 3px;
+            left: 38%;
+            height: 50px;
+            background: rgb(0, 0, 70);
+            color: white;
+            font-size: 25px;
+            line-height: 50px;
+            text-transform: uppercase;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin: 0;
+            padding: 3 20px;
+            transition: 0.4s;
+            border-radius: 20px;
+        }
+
+        input#minute {
+            border: 2px solid white;
+            outline: none;
+            position: absolute;
+            top: 480px;
+            width: 100px;
+            letter-spacing: 3px;
+            left: 47%;
+            height: 50px;
+            background: rgb(0, 0, 70);
+            color: white;
+            font-size: 25px;
+            line-height: 50px;
+            text-transform: uppercase;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin: 0;
+            padding: 3 20px;
+            transition: 0.4s;
+            border-radius: 20px;
+        }
+
+        label {
+            position: absolute;
+            top: 500px;
+            left: 28%;
+            color: white;
+            font-size: 20px;
+            text-transform: uppercase;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+        }
+
+        label.minute {
+            left: 46%;
+
+        }
+    </style>
+</head>
+
+<body ng-app="main" ng-controller="mainCtrl">
+    <div id="outer">
+        <ul>
+            <li>
+                <a href="stopwatch.html">Stop Watch</a>
+            </li>
+            <li>
+                <a href="clock.html">Clock</a>
+            </li>
+            <li>
+                <a class="active" href="timer.html">Timer</a>
+            </li>
+        </ul>
+        <span id="time">{{m}}:{{s}}:{{ms}}</span>
+        <label class="alarmLabel">Set Timer :</label>
+
+        <select id="minute">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>5</option>
+            <option>10</option>
+            <option>30</option>
+        </select>
+        <label class="minute">Minutes</label>
+        <button ng-click="Set()" id="Set">
+            Set
+        </button>
+        <button ng-click="start()" id="start">
+            Start
+        </button>
+        <button ng-click="reset()" id="reset">
+            reset
+        </button>
+        <button ng-click="stop()" id="stop">
+            stop
+        </button>
+    </div>
+</body>
+</html
